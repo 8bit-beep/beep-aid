@@ -1,0 +1,5 @@
+html, body {
+    touch-action: pan-y pan-x;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
