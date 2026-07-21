@@ -14,5 +14,5 @@ export type TabItem = {
 export const TAB_ITEMS: TabItem[] = [
   { path: TAB_PATHS.room, label: "실 이동", isReady: false },
   { path: TAB_PATHS.home, label: "홈" },
-  { path: TAB_PATHS.profile, label: "마이" },
+  { path: TAB_PATHS.profile, label: "프로필" },
 ];
