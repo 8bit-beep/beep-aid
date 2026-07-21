@@ -28,7 +28,10 @@ export const Navbar = () => {
           <button
             key={item.path}
             type="button"
-            onClick={() => tab.move(item.path)}
+            onClick={() => {
+              if (item.isReady === false) return; // TODO: 토스트 알림으로 교체
+              tab.move(item.path);
+            }}
             className="flex flex-1 flex-col items-center gap-1 py-3"
           >
             <span
