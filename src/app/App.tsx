@@ -4,6 +4,7 @@ import { BridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
 import { SafeAreaProvider, useSafeArea } from "@b1nd/aid-kit/safe-area-provider";
 import { AppStateProvider } from "@b1nd/aid-kit/app-state";
 import { RouteProvider, Router } from "@b1nd/aid-kit/navigation";
+import { Navbar } from "@/widgets/navbar";
 import { routes } from "./routes";
 
 type SafeAreaProperties = CSSProperties & {
@@ -23,6 +24,7 @@ function AppShell() {
       <main className="app-shell__scroll">
         <Router routes={routes} />
       </main>
+      <Navbar />
     </div>
   );
 }
