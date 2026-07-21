@@ -1,6 +1,6 @@
 import type { Routes } from "@b1nd/aid-kit/navigation";
-import { HomePage } from "../../page/home";
-import { ProfilePage } from "../../page/profile";
+import { HomePage } from "../../pages/home";
+import { ProfilePage } from "../../pages/profile";
 
 
 export const routes: Routes = {
