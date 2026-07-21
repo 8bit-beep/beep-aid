@@ -1,10 +1,10 @@
-import './styles/app-shell.css'
+import "./styles/app-shell.css";
 import type { CSSProperties } from "react";
 import { BridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
 import { SafeAreaProvider, useSafeArea } from "@b1nd/aid-kit/safe-area-provider";
 import { AppStateProvider } from "@b1nd/aid-kit/app-state";
 import { RouteProvider, Router } from "@b1nd/aid-kit/navigation";
-import { routes } from "./routes"
+import { routes } from "./routes";
 
 type SafeAreaProperties = CSSProperties & {
   "--native-safe-area-top": string;
@@ -41,4 +41,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

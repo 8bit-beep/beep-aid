@@ -1,0 +1,9 @@
+dist
+node_modules
+.idea
+.pnpm-store
+android
+ios
+coverage
+.claude
+pnpm-lock.yaml
