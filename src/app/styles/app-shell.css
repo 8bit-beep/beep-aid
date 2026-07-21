@@ -20,14 +20,8 @@ body {
   min-block-size: 0;
   display: flex;
   flex-direction: column;
-  padding-block-start: max(
-    var(--native-safe-area-top),
-    env(safe-area-inset-top, 0px)
-  );
-  padding-block-end: max(
-    var(--native-safe-area-bottom),
-    env(safe-area-inset-bottom, 0px)
-  );
+  padding-block-start: max(var(--native-safe-area-top), env(safe-area-inset-top, 0px));
+  padding-block-end: max(var(--native-safe-area-bottom), env(safe-area-inset-bottom, 0px));
   overflow: hidden;
 }
 
