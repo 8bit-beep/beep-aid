@@ -1,4 +1,4 @@
-import '../App.css'
+import './styles/app-shell.css'
 import type { CSSProperties } from "react";
 import { BridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
 import { SafeAreaProvider, useSafeArea } from "@b1nd/aid-kit/safe-area-provider";
