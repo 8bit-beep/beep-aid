@@ -5,7 +5,7 @@ import { HomeHeader } from "./home-header";
 
 export const HomePage = () => {
   return (
-    <div className="flex flex-col gap-4 bg-gray-50 px-4 pb-6">
+    <div className="flex min-h-full flex-col gap-4 bg-gray-50 px-4 pb-6">
       <HomeHeader />
       <DutyTeacherBanner />
       <AttendanceCard />
