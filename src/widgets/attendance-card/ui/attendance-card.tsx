@@ -4,7 +4,7 @@ import attendanceIllustration from "@/shared/ui/assets/attendance-illustration.g
 
 export const AttendanceCard = () => {
   return (
-    <section className="rounded-lg bg-white p-5 shadow-sm">
+    <section className="rounded-medium bg-white p-5 shadow-sm">
       <h2 className="text-lg font-bold text-gray-900">출석 체크</h2>
 
       <div className="my-6 flex justify-center">

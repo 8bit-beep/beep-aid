@@ -1,3 +1,4 @@
+import { colors } from "@bds-web/colors";
 import { TAB_ITEMS, TAB_PATHS } from "@/shared/config/tabs";
 import { useTabNavigate } from "@/shared/lib/use-tab-navigate";
 import { maskIconStyle } from "@/shared/lib/mask-icon-style";
@@ -11,8 +12,8 @@ const TAB_ICONS: Record<string, string> = {
   [TAB_PATHS.profile]: profileIcon,
 };
 
-const ACTIVE_COLOR = "#3B6EA5";
-const INACTIVE_COLOR = "#7D7D7D";
+const ACTIVE_COLOR = colors.blue.light;
+const INACTIVE_COLOR = colors.greyScale[40];
 
 export const Navbar = () => {
   const { current, navigateToTab } = useTabNavigate();

@@ -16,7 +16,7 @@ export const Button = ({ variant = "primary", className = "", style, ...props }:
   return (
     <button
       type="button"
-      className={`flex-1 rounded-lg py-3 text-sm font-semibold ${className}`}
+      className={`flex-1 rounded-medium py-3 text-sm font-semibold ${className}`}
       style={{ ...VARIANT_STYLE[variant], ...style }}
       {...props}
     />
