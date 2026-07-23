@@ -1,6 +1,5 @@
 import { AttendanceCard } from "@/widgets/attendance-card";
 import { DutyTeacherTable } from "@/entities/duty-teacher";
-import { RoomMoveBanner } from "@/features/request-room-move";
 import { HomeHeader } from "./home-header";
 
 export const HomePage = () => {
@@ -9,7 +8,6 @@ export const HomePage = () => {
       <HomeHeader />
       <DutyTeacherTable />
       <AttendanceCard />
-      <RoomMoveBanner />
     </div>
   );
 };
