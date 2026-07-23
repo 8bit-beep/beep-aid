@@ -25,7 +25,7 @@ export const useDutyTeachers = () => {
         setDutyTeachers(
           GRADES.map((grade, index) => ({
             grade,
-            teacherName: row[index] && row[index] !== "#N/A" ? row[index] : FALLBACK_NAME,
+            teacherName: row[index] && !row[index].startsWith("#") ? row[index] : FALLBACK_NAME,
           }))
         );
       })
