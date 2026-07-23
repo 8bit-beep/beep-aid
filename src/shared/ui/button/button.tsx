@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, CSSProperties } from "react";
-import { BRAND_COLOR } from "@/shared/config/colors";
+import { BRAND_COLOR, DANGER_COLOR } from "@/shared/config/colors";
 
 type ButtonVariant = "primary" | "secondary" | "danger";
 
@@ -10,7 +10,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 const VARIANT_STYLE: Record<ButtonVariant, CSSProperties> = {
   primary: { backgroundColor: BRAND_COLOR, color: "#fff" },
   secondary: { borderWidth: 1, borderStyle: "solid", borderColor: BRAND_COLOR, color: BRAND_COLOR },
-  danger: { backgroundColor: "#EF4444", color: "#fff" },
+  danger: { backgroundColor: DANGER_COLOR, color: "#fff" },
 };
 
 export const Button = ({ variant = "primary", className = "", style, ...props }: ButtonProps) => {
