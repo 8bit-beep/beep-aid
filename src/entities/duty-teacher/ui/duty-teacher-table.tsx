@@ -1,4 +1,4 @@
-import { BRAND_COLOR } from "@/shared/config/colors.ts";
+import { BRAND_COLOR } from "@/shared/config/colors";
 import { useDutyTeachers } from "../model/use-duty-teachers";
 
 const PLACEHOLDER_TEACHERS = [
@@ -17,7 +17,7 @@ export const DutyTeacherTable = () => {
       <div className="mt-4 grid grid-cols-3">
         {(dutyTeachers ?? PLACEHOLDER_TEACHERS).map(({ grade, teacherName }) => (
           <div key={grade} className="text-center text-base">
-            <span className="mr-1 text-base-gray-700">{grade} </span>
+            <span className="mr-1 text-base text-gray-700">{grade} </span>
             <span className="text-lg font-semibold" style={{ color: BRAND_COLOR }}>
               {teacherName}
             </span>
