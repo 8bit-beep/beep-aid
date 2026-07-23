@@ -1,7 +1,6 @@
 import { TopNavBar } from "@b1nd/dodam-design-system/components";
 import { UserProfileCard } from "@/entities/user";
 import { WeeklySchedule } from "@/widgets/weekly-schedule";
-import { LogoutButton } from "@/features/logout";
 
 export const ProfilePage = () => {
   return (
@@ -13,7 +12,6 @@ export const ProfilePage = () => {
       <div className="flex flex-col gap-4 px-4 pt-4">
         <UserProfileCard />
         <WeeklySchedule />
-        <LogoutButton />
       </div>
     </div>
   );
