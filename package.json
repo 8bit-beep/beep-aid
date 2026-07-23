@@ -16,6 +16,7 @@
     "@b1nd/aid-kit": "^1.0.9",
     "@bds-web/colors": "^1.1.0",
     "@bds-web/shapes": "^1.1.0",
+    "axios": "^1.18.1",
     "framer-motion": "^12.42.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
