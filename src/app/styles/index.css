@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@bds-web/colors/colors.css";
 @import "@bds-web/shapes/tokens.tailwind.css";
+@import "@b1nd/dodam-design-system/colors/colors.css";
 
 :root {
   --native-safe-area-top: 0px;

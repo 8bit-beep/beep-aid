@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@b1nd/aid-kit": "^1.0.9",
+    "@b1nd/dodam-design-system": "^1.0.11",
     "@bds-web/colors": "^1.1.0",
     "@bds-web/shapes": "^1.1.0",
     "axios": "^1.18.1",
