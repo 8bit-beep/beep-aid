@@ -1,8 +1,12 @@
 import { useMarkAttendance } from "@/features/mark-attendance/model/use-mark-attendance";
 import { Button } from "@/shared/ui/button";
 
-export const MarkAttendanceButton = () => {
-  const { markAttendance } = useMarkAttendance();
+type MarkAttendanceButtonProps = {
+  onSuccess?: () => void;
+};
+
+export const MarkAttendanceButton = ({ onSuccess }: MarkAttendanceButtonProps) => {
+  const { markAttendance } = useMarkAttendance(onSuccess);
 
   return (
     <Button variant="primary" onClick={markAttendance}>

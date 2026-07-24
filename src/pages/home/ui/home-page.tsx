@@ -1,5 +1,6 @@
 import { AttendanceCard } from "@/widgets/attendance-card";
 import { DutyTeacherTable } from "@/entities/duty-teacher";
+import { HelpFriendAttendanceBanner } from "@/features/help-friend-attendance";
 import { HomeHeader } from "./home-header";
 
 export const HomePage = () => {
@@ -8,6 +9,7 @@ export const HomePage = () => {
       <HomeHeader />
       <DutyTeacherTable />
       <AttendanceCard />
+      <HelpFriendAttendanceBanner />
     </div>
   );
 };

@@ -1,8 +1,12 @@
 import { useScanAttendanceQr } from "@/features/scan-attendance-qr/model/use-scan-attendance-qr";
 import { Button } from "@/shared/ui/button";
 
-export const ScanAttendanceQrButton = () => {
-  const { scanAttendanceQr } = useScanAttendanceQr();
+type ScanAttendanceQrButtonProps = {
+  onSuccess?: () => void;
+};
+
+export const ScanAttendanceQrButton = ({ onSuccess }: ScanAttendanceQrButtonProps) => {
+  const { scanAttendanceQr } = useScanAttendanceQr(onSuccess);
 
   return (
     <Button variant="secondary" onClick={scanAttendanceQr}>
