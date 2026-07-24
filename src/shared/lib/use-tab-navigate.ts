@@ -9,7 +9,7 @@ export const useTabNavigate = () => {
   const navigateToTab = (path: TabItem["path"]) => {
     const target = TAB_ITEMS.find(item => item.path === path);
     if (target?.isReady === false) {
-      toast.warning(`${target.label} 기능은 아직 준비 중이에요`, {position: "top"});
+      toast.warning(`${target.label} 기능은 아직 준비 중이에요`, { position: "top" });
       return;
     }
     tab.move(path);
