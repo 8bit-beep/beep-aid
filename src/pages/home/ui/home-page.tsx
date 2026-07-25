@@ -1,6 +1,6 @@
-import { AttendanceCard } from "@/widgets/attendance-card";
+import { AttendanceCard } from "@/widgets/attendance/attendance-card";
 import { DutyTeacherTable } from "@/entities/duty-teacher";
-import { HelpFriendAttendanceBanner } from "@/features/help-friend-attendance";
+import { HelpFriendAttendanceBanner } from "@/features/attendance/help-friend-attendance";
 import { HomeHeader } from "./home-header";
 
 export const HomePage = () => {
