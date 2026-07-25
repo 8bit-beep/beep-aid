@@ -1,6 +1,6 @@
 import { Actions, useBridgeProvider, useBridgeResponse } from "@b1nd/aid-kit/bridge-kit/web";
 
-export const useScanAttendanceQr = (onSuccess?: () => void) => {
+export const useQRCheck = (onSuccess?: () => void) => {
   const { send } = useBridgeProvider();
 
   useBridgeResponse(Actions.QR_SCAN, async () => {
@@ -9,7 +9,7 @@ export const useScanAttendanceQr = (onSuccess?: () => void) => {
     return {};
   });
 
-  const scanAttendanceQr = () => send(Actions.QR_SCAN);
+  const qrCheck = () => send(Actions.QR_SCAN);
 
-  return { scanAttendanceQr };
+  return { qrCheck };
 };

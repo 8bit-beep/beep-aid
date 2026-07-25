@@ -1,4 +1,4 @@
-import { useCheckOutAttendance } from "@/features/check-out-attendance/model/use-check-out-attendance";
+import { useCheckOutAttendance } from "@/features/attendance/check-out-attendance/model/use-check-out-attendance";
 import { Button } from "@/shared/ui/button";
 
 type CheckOutAttendanceButtonProps = {
