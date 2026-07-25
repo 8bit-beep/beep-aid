@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { MarkAttendanceButton } from "@/features/mark-attendance";
-import { ScanAttendanceQrButton } from "@/features/scan-attendance-qr";
-import { CheckOutAttendanceButton } from "@/features/check-out-attendance";
+import { CheckOutAttendanceButton } from "@/features/attendance/check-out-attendance";
+import { NFCCheckButton } from "@/features/attendance/nfc-check";
+import { QRCheckButton } from "@/features/attendance/qr-check";
 import phone from "@/shared/ui/assets/phone.gif";
 import phoneEnd from "@/shared/ui/assets/phone-end.png";
 
@@ -29,8 +29,8 @@ export const AttendanceCard = () => {
         />
       ) : (
         <div className="flex gap-3">
-          <MarkAttendanceButton onSuccess={() => setIsCheckedIn(true)} />
-          <ScanAttendanceQrButton onSuccess={() => setIsCheckedIn(true)} />
+          <NFCCheckButton onSuccess={() => setIsCheckedIn(true)} />
+          <QRCheckButton onSuccess={() => setIsCheckedIn(true)} />
         </div>
       )}
     </section>
