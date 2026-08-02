@@ -4,27 +4,19 @@ import phone from "@/shared/ui/assets/phone.gif";
 import phoneEnd from "@/shared/ui/assets/phone-end.png";
 import { Button } from "@/shared/ui/button";
 import { AttendanceModal } from "../../attendance-modal";
-
+import type { AttendanceMethod } from "../../attendance-modal/type";
 
 const DEFAULT_ACTIVITY = "교실자습";
 
 export const AttendanceCard = () => {
-  const [isCheckedIn, setIsCheckedIn] = useState(false);  // 출석 여부
-  const [currentActivity, setCurrentActivity] = useState(DEFAULT_ACTIVITY); // 출석 등록 타입
+  const [isCheckedIn, setIsCheckedIn] = useState(false); // 출석 여부
+  const [currentActivity] = useState(DEFAULT_ACTIVITY); // 출석 등록 타입
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false); // 모달 표시 여부
-  
+  const [attendanceMethod, setAttendanceMethod] = useState<AttendanceMethod>("NFC");
 
-  const openAttendanceModal = () => {
+  const openAttendanceModal = (method: AttendanceMethod) => {
+    setAttendanceMethod(method);
     setIsAttendanceModalOpen(true);
-  };
-
-  const closeAttendanceModal = () => {
-    setIsAttendanceModalOpen(false);
-  };
-
-  const confirmAttendance = (activity: string) => {
-    setCurrentActivity(activity);
-    setIsCheckedIn(true);
   };
 
   return (
@@ -47,10 +39,10 @@ export const AttendanceCard = () => {
           />
         ) : (
           <div className="flex gap-3">
-            <Button variant="primary" onClick={openAttendanceModal}>
+            <Button variant="primary" onClick={() => openAttendanceModal("NFC")}>
               NFC 출석
             </Button>
-            <Button variant="secondary" onClick={openAttendanceModal}>
+            <Button variant="secondary" onClick={() => openAttendanceModal("QR")}>
               QR 출석
             </Button>
           </div>
@@ -58,7 +50,10 @@ export const AttendanceCard = () => {
       </section>
 
       {isAttendanceModalOpen && (
-        <AttendanceModal onClose={closeAttendanceModal} onConfirm={confirmAttendance} />
+        <AttendanceModal
+          onClose={() => setIsAttendanceModalOpen(false)}
+          method={attendanceMethod}
+        />
       )}
     </>
   );

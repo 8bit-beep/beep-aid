@@ -1,4 +1,6 @@
 export type AttendanceModalProps = {
   readonly onClose: () => void;
-  readonly onConfirm: (activity: string) => void;
+  readonly method: AttendanceMethod;
 };
+
+export type AttendanceMethod = "NFC" | "QR";
