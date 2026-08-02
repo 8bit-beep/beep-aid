@@ -4,16 +4,22 @@ import { Button } from "@/shared/ui/button";
 import { Modal } from "@/shared/ui/modal";
 import type { AttendanceModalProps } from "../type";
 
-const ATTENDANCE_TYPES = [
-  { name: "교실자습", value: "교실자습" },
-  { name: "동아리", value: "동아리" },
-];
+type AttendanceType = {
+  readonly id: number;
+  readonly name: string;
+};
 
 export const AttendanceModal = ({ onClose, method }: AttendanceModalProps) => {
-  const [selectedActivity, setSelectedActivity] = useState(ATTENDANCE_TYPES[0].value);
+  // TODO: 출석 타입 조회 훅의 서버 응답으로 교체
+  const attendanceTypes: AttendanceType[] = [];
+  const dropdownItems = attendanceTypes.map(item => ({
+    value: String(item.id),
+    name: item.name,
+  }));
+  const [selectedAttendanceTypeId, setSelectedAttendanceTypeId] = useState("");
 
   const handleAttendance = () => {
-    if (!selectedActivity) return;
+    if (!selectedAttendanceTypeId) return;
 
     if (method === "NFC") {
       // NFC Scan
@@ -27,10 +33,10 @@ export const AttendanceModal = ({ onClose, method }: AttendanceModalProps) => {
     <Modal title="어떤 출석체크인가요?" onClose={onClose}>
       <div className="flex flex-col gap-6">
         <Dropdown
-          items={ATTENDANCE_TYPES}
-          value={selectedActivity}
+          items={dropdownItems}
+          value={selectedAttendanceTypeId}
           onSelectedItemChange={item => {
-            setSelectedActivity(item.value);
+            setSelectedAttendanceTypeId(item.value);
           }}
           customStyle={{
             width: "100%",
@@ -42,7 +48,11 @@ export const AttendanceModal = ({ onClose, method }: AttendanceModalProps) => {
           <Button variant="danger" onClick={onClose}>
             취소
           </Button>
-          <Button variant="primary" onClick={handleAttendance}>
+          <Button
+            variant="primary"
+            disabled={!selectedAttendanceTypeId}
+            onClick={handleAttendance}
+          >
             출석
           </Button>
         </div>
