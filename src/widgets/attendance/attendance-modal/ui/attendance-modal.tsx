@@ -3,6 +3,7 @@ import { Dropdown } from "@b1nd/dodam-design-system/components";
 import { Button } from "@/shared/ui/button";
 import { Modal } from "@/shared/ui/modal";
 import type { AttendanceModalProps } from "../type";
+import { useNFCRead } from "../../../../shared/lib/aid-bridge";
 
 const ATTENDANCE_TYPES = [
   { name: "교실자습", value: "교실자습" },
@@ -11,6 +12,8 @@ const ATTENDANCE_TYPES = [
 
 export const AttendanceModal = ({ onClose, onConfirm }: AttendanceModalProps) => {
   const [selectedActivity, setSelectedActivity] = useState(ATTENDANCE_TYPES[0].value);
+  const { nfcCheck } = useNFCRead();
+  
 
   return (
     <Modal title="어떤 출석체크인가요?" onClose={onClose}>
