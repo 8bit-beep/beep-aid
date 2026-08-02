@@ -5,12 +5,14 @@ import phoneEnd from "@/shared/ui/assets/phone-end.png";
 import { Button } from "@/shared/ui/button";
 import { AttendanceModal } from "../../attendance-modal";
 
+
 const DEFAULT_ACTIVITY = "교실자습";
 
 export const AttendanceCard = () => {
-  const [isCheckedIn, setIsCheckedIn] = useState(false);
-  const [currentActivity, setCurrentActivity] = useState(DEFAULT_ACTIVITY);
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
+  const [isCheckedIn, setIsCheckedIn] = useState(false);  // 출석 여부
+  const [currentActivity, setCurrentActivity] = useState(DEFAULT_ACTIVITY); // 출석 등록 타입
+  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false); // 모달 표시 여부
+  
 
   const openAttendanceModal = () => {
     setIsAttendanceModalOpen(true);
@@ -23,7 +25,6 @@ export const AttendanceCard = () => {
   const confirmAttendance = (activity: string) => {
     setCurrentActivity(activity);
     setIsCheckedIn(true);
-    closeAttendanceModal();
   };
 
   return (
