@@ -3,17 +3,25 @@ import { Dropdown } from "@b1nd/dodam-design-system/components";
 import { Button } from "@/shared/ui/button";
 import { Modal } from "@/shared/ui/modal";
 import type { AttendanceModalProps } from "../type";
-import { useNFCRead } from "../../../../shared/lib/aid-bridge";
 
 const ATTENDANCE_TYPES = [
   { name: "교실자습", value: "교실자습" },
   { name: "동아리", value: "동아리" },
 ];
 
-export const AttendanceModal = ({ onClose, onConfirm }: AttendanceModalProps) => {
+export const AttendanceModal = ({ onClose, method }: AttendanceModalProps) => {
   const [selectedActivity, setSelectedActivity] = useState(ATTENDANCE_TYPES[0].value);
-  const { nfcCheck } = useNFCRead();
-  
+
+  const handleAttendance = () => {
+    if (!selectedActivity) return;
+
+    if (method === "NFC") {
+      // NFC Scan
+      return;
+    }
+
+    // QR 스캔
+  };
 
   return (
     <Modal title="어떤 출석체크인가요?" onClose={onClose}>
@@ -34,7 +42,7 @@ export const AttendanceModal = ({ onClose, onConfirm }: AttendanceModalProps) =>
           <Button variant="danger" onClick={onClose}>
             취소
           </Button>
-          <Button variant="primary" onClick={() => onConfirm(selectedActivity)}>
+          <Button variant="primary" onClick={handleAttendance}>
             출석
           </Button>
         </div>
