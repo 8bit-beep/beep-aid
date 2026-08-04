@@ -11,7 +11,7 @@ export const client = (config: CreateAxiosDefaults) => {
     error => {
       console.error(`[API Error] ${error.config?.url}`, error);
       return Promise.reject(error);
-    },
+    }
   );
 
   return client;
