@@ -1,9 +1,21 @@
 import { useState } from "react";
-import { WEEKDAYS, WEEKLY_SCHEDULE, type Weekday } from "../model/mock-schedule";
+import {
+  useCheckpoints,
+  formatTime,
+  WEEKDAYS,
+  WEEKDAY_TO_DAY_OF_WEEK,
+  type Weekday,
+} from "@/entities/checkpoint";
 
 export const WeeklySchedule = () => {
   const [selectedDay, setSelectedDay] = useState<Weekday>(WEEKDAYS[0]);
-  const schedule = WEEKLY_SCHEDULE[selectedDay];
+  const { checkpoints } = useCheckpoints();
+
+  const schedule = (checkpoints ?? [])
+    .filter(checkpoint => checkpoint.dayOfWeek === WEEKDAY_TO_DAY_OF_WEEK[selectedDay])
+    .sort(
+      (a, b) => a.startAt.hour * 60 + a.startAt.minute - (b.startAt.hour * 60 + b.startAt.minute)
+    );
 
   return (
     <div className="flex flex-col gap-4">
@@ -24,10 +36,12 @@ export const WeeklySchedule = () => {
 
       <div className="rounded-medium bg-white p-5 shadow-sm">
         {schedule.length > 0 ? (
-          schedule.map((item, index) => (
-            <div key={index} className="flex items-center justify-between py-2">
-              <span className="text-gray-700">{item.label}</span>
-              <span className="font-medium text-gray-900">{item.detail}</span>
+          schedule.map(checkpoint => (
+            <div key={checkpoint.id} className="flex items-center justify-between py-2">
+              <span className="text-gray-700">{checkpoint.name}</span>
+              <span className="font-medium text-gray-900">
+                {formatTime(checkpoint.startAt)} ~ {formatTime(checkpoint.endAt)}
+              </span>
             </div>
           ))
         ) : (
