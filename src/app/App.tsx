@@ -5,6 +5,7 @@ import { SafeAreaProvider, useSafeArea } from "@b1nd/aid-kit/safe-area-provider"
 import { AppStateProvider } from "@b1nd/aid-kit/app-state";
 import { RouteProvider, Router } from "@b1nd/aid-kit/navigation";
 import { ToastProvider } from "@b1nd/dodam-design-system/components";
+import { AuthProvider } from "@/features/auth";
 import { Navbar } from "@/widgets/navbar";
 import { routes } from "./routes";
 
@@ -36,9 +37,11 @@ function App() {
     <BridgeProvider>
       <SafeAreaProvider>
         <AppStateProvider>
-          <RouteProvider routes={routes}>
-            <AppShell />
-          </RouteProvider>
+          <AuthProvider>
+            <RouteProvider routes={routes}>
+              <AppShell />
+            </RouteProvider>
+          </AuthProvider>
         </AppStateProvider>
       </SafeAreaProvider>
     </BridgeProvider>

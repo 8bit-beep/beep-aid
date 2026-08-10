@@ -1,5 +1,5 @@
 import { Actions, useBridgeProvider, useBridgeResponse } from "@b1nd/aid-kit/bridge-kit/web";
-import { NFCReeadResponse } from "./nfc-response.schema";
+import type { NFCReeadResponse } from "./nfc-response.schema";
 
 export const useNFCRead = (onSuccess?: () => void) => {
   const { send } = useBridgeProvider();
