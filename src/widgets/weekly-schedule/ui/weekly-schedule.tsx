@@ -22,7 +22,7 @@ export const WeeklySchedule = () => {
         ))}
       </div>
 
-      <div className="rounded-medium bg-white p-5 shadow-sm">
+      <div className="rounded-medium bg-white p-5">
         {schedule.length > 0 ? (
           schedule.map((item, index) => (
             <div key={index} className="flex items-center justify-between py-2">
