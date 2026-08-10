@@ -11,7 +11,7 @@ export const DutyTeacherTable = () => {
   const { dutyTeachers } = useDutyTeachers();
 
   return (
-    <section className="rounded-medium bg-white p-5 shadow-sm">
+    <section className="rounded-medium bg-white p-5">
       <h2 className="text-lg font-bold text-gray-900">오늘의 당직 선생님</h2>
 
       <div className="mt-4 grid grid-cols-3">
