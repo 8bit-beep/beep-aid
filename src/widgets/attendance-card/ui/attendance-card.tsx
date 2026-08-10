@@ -11,7 +11,7 @@ export const AttendanceCard = () => {
   const [isCheckedIn, setIsCheckedIn] = useState(false);
 
   return (
-    <section className="rounded-medium bg-white p-5">
+    <section className="rounded-xl bg-white p-5">
       <h2 className="text-lg font-bold text-gray-900">출석 체크</h2>
 
       <div className="my-6 flex justify-center">
