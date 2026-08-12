@@ -5,7 +5,7 @@ import { TAB_PATHS } from "@/shared/config/tabs";
 
 export const routes: Routes = {
   tabs: [
-    { path: TAB_PATHS.home, element: HomePage },
+    { path: TAB_PATHS.home, element: HomePage, index: true },
     { path: TAB_PATHS.profile, element: ProfilePage },
   ],
   stacks: [],

@@ -1,5 +1,5 @@
 import { useRouter } from "@b1nd/aid-kit/navigation";
-import { useToast } from "@b1nd/dodam-design-system/components";
+import { useToast } from "@/shared/ui/toast";
 import { TAB_ITEMS, type TabItem } from "@/shared/config/tabs";
 
 export const useTabNavigate = () => {
