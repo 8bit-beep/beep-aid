@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { WEEKDAYS, WEEKLY_SCHEDULE, type Weekday } from "../model/mock-schedule";
+import { useMemo, useState } from "react";
+import { groupSchedulesByDay, useMySchedules } from "@/entities/schedule";
+import { getTodayWeekday, WEEKDAY_TO_DAY_OF_WEEK, WEEKDAYS, type Weekday } from "../model/weekday";
 
 export const WeeklySchedule = () => {
-  const [selectedDay, setSelectedDay] = useState<Weekday>(WEEKDAYS[0]);
-  const schedule = WEEKLY_SCHEDULE[selectedDay];
+  const [selectedDay, setSelectedDay] = useState<Weekday>(getTodayWeekday);
+  const { schedules, isLoading, error, refetch } = useMySchedules();
+
+  const schedulesByDay = useMemo(() => groupSchedulesByDay(schedules), [schedules]);
+  const daySchedules = schedulesByDay[WEEKDAY_TO_DAY_OF_WEEK[selectedDay]] ?? [];
 
   return (
     <div className="flex flex-col gap-4">
@@ -23,11 +27,26 @@ export const WeeklySchedule = () => {
       </div>
 
       <div className="rounded-medium bg-white p-5">
-        {schedule.length > 0 ? (
-          schedule.map((item, index) => (
-            <div key={index} className="flex items-center justify-between py-2">
-              <span className="text-gray-700">{item.label}</span>
-              <span className="font-medium text-gray-900">{item.detail}</span>
+        {isLoading ? (
+          <p className="py-2 text-center text-gray-400">스케줄을 불러오는 중이에요</p>
+        ) : error ? (
+          <div className="flex flex-col items-center gap-2 py-2">
+            <p className="text-center text-gray-400">스케줄을 불러오지 못했어요</p>
+            <button
+              type="button"
+              onClick={refetch}
+              className="text-sm font-medium text-gray-600 underline"
+            >
+              다시 시도
+            </button>
+          </div>
+        ) : daySchedules.length > 0 ? (
+          daySchedules.map(schedule => (
+            <div key={schedule.id} className="flex items-center justify-between py-2">
+              <span className="text-gray-700">{schedule.type.name}</span>
+              <span className="font-medium text-gray-900">
+                {schedule.room.name} ({schedule.checkpoint.name})
+              </span>
             </div>
           ))
         ) : (
