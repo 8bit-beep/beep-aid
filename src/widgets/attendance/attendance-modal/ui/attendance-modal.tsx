@@ -11,7 +11,7 @@ export const AttendanceModal = ({ onClose, method }: AttendanceModalProps) => {
     value: String(item.id),
     name: item.name,
   }));
-  const [selectedAttendanceTypeId, setSelectedAttendanceTypeId] = useState("");
+  const [selectedAttendanceTypeId, setSelectedAttendanceTypeId] = useState("출석 유형 선택");
   const hasValidSelection = attendanceTypes.some(
     item => String(item.id) === selectedAttendanceTypeId,
   );
