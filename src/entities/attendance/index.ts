@@ -1,4 +1,14 @@
+export { cancelAttendance } from "./api/cancel-attendance";
+export { createAttendance } from "./api/create-attendance";
 export { getAttendanceTypes } from "./api/get-attendance-types";
+export { scanHelpQr } from "./api/scan-help-qr";
+export { AttendanceError, toAttendanceError } from "./model/attendance-error";
+export {
+  createAttendanceRequestSchema,
+  scanHelpQrRequestSchema,
+  type CreateAttendanceRequest,
+  type ScanHelpQrRequest,
+} from "./model/attendance-request";
 export {
   attendanceTypeSchema,
   attendanceTypesSchema,

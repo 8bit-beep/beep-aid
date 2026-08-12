@@ -21,7 +21,7 @@ const consumeDodamTokenFromUrl = () => {
   return dodamToken;
 };
 
-const getCurrentUser = async () => {
+export const getCurrentUser = async () => {
   const response = await appClient.get("/users/my");
   return userSchema.parse(response.data);
 };
