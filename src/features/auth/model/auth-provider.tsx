@@ -1,7 +1,7 @@
 import { useEffect, useState, type PropsWithChildren } from "react";
 import { MOCK_USER, type User } from "@/entities/user";
 import { useAuthTokenPersistence } from "@/shared/lib/auth-token";
-import { bootstrapAidAuth, retryAidAuth } from "../api/auth-api";
+import { bootstrapAidAuth, getCurrentUser, retryAidAuth } from "../api/auth-api";
 import { AuthStatusScreen } from "../ui/auth-status-screen";
 import { AuthContext } from "./auth-context";
 
@@ -52,6 +52,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setAttempt(currentAttempt => currentAttempt + 1);
   };
 
+  const refreshUser = async () => {
+    if (useMockUser) {
+      setState({ status: "authenticated", user: MOCK_USER });
+      return MOCK_USER;
+    }
+
+    const user = await getCurrentUser();
+    setState({ status: "authenticated", user });
+    return user;
+  };
+
   if (state.status === "loading") {
     return (
       <AuthStatusScreen
@@ -68,5 +79,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     );
   }
 
-  return <AuthContext.Provider value={{ user: state.user }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user: state.user, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

@@ -1,22 +1,37 @@
 import { useState } from "react";
 import { CheckOutAttendanceButton } from "@/features/attendance/check-out-attendance";
+import { useAuth } from "@/features/auth";
 import phone from "@/shared/ui/assets/phone.gif";
 import phoneEnd from "@/shared/ui/assets/phone-end.png";
 import { Button } from "@/shared/ui/button";
+import { useToast } from "@/shared/ui/toast";
 import { AttendanceModal } from "../../attendance-modal";
 import type { AttendanceMethod } from "../../attendance-modal/type";
 
-const DEFAULT_ACTIVITY = "교실자습";
-
 export const AttendanceCard = () => {
-  const [isCheckedIn, setIsCheckedIn] = useState(false); // 출석 여부
-  const [currentActivity] = useState(DEFAULT_ACTIVITY); // 출석 등록 타입
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false); // 모달 표시 여부
+  const { user, refreshUser } = useAuth();
+  const toast = useToast();
+  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [attendanceMethod, setAttendanceMethod] = useState<AttendanceMethod>("NFC");
+  const currentStatus = user.currentStatus;
+  const isCheckedIn = currentStatus != null && currentStatus.name !== "미출석";
 
   const openAttendanceModal = (method: AttendanceMethod) => {
     setAttendanceMethod(method);
     setIsAttendanceModalOpen(true);
+  };
+
+  const refreshAttendanceState = async () => {
+    try {
+      await refreshUser();
+    } catch {
+      toast.warning("서버 상태를 새로고침하지 못했어요. 화면을 다시 열어 확인해 주세요.");
+    }
+  };
+
+  const handleAttendanceSuccess = async () => {
+    await refreshAttendanceState();
+    setIsAttendanceModalOpen(false);
   };
 
   return (
@@ -32,10 +47,10 @@ export const AttendanceCard = () => {
           />
         </div>
 
-        {isCheckedIn ? (
+        {isCheckedIn && currentStatus ? (
           <CheckOutAttendanceButton
-            currentActivity={currentActivity}
-            onSuccess={() => setIsCheckedIn(false)}
+            currentActivity={currentStatus.name}
+            onSuccess={refreshAttendanceState}
           />
         ) : (
           <div className="flex gap-3">
@@ -52,6 +67,7 @@ export const AttendanceCard = () => {
       {isAttendanceModalOpen && (
         <AttendanceModal
           onClose={() => setIsAttendanceModalOpen(false)}
+          onSuccess={handleAttendanceSuccess}
           method={attendanceMethod}
         />
       )}
