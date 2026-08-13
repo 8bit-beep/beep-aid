@@ -18,7 +18,7 @@ export const DutyTeacherTable = () => {
         {(dutyTeachers ?? PLACEHOLDER_TEACHERS).map(({ grade, teacherName }) => (
           <div key={grade} className="text-center text-base">
             <span className="mr-1 text-base text-gray-700">{grade} </span>
-            <span className="text-lg font-semibold" style={{ color: BRAND_COLOR }}>
+            <span className="text-lg font-semibold break-keep" style={{ color: BRAND_COLOR }}>
               {teacherName}
             </span>
           </div>
