@@ -1,5 +1,6 @@
 import { BannerRow } from "@/shared/ui/banner-row";
 import { ChevronRightIcon } from "@/shared/ui/chevron-right-icon";
+import { generateHelpQr, toAttendanceError } from "@/entities/attendance";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import QRCode from "react-qr-code";
@@ -7,6 +8,25 @@ import { Button } from "@/shared/ui/button";
 
 export const HelpFriendAttendanceBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [qrToken, setQrToken] = useState<string | null>(null);
+  const [qrError, setQrError] = useState<string | null>(null);
+  const [isQrLoading, setIsQrLoading] = useState(false);
+
+  const openHelpQr = async () => {
+    setIsOpen(true);
+    setQrToken(null);
+    setQrError(null);
+    setIsQrLoading(true);
+
+    try {
+      const { token } = await generateHelpQr();
+      setQrToken(token);
+    } catch (error) {
+      setQrError(toAttendanceError(error).message);
+    } finally {
+      setIsQrLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -37,11 +57,7 @@ export const HelpFriendAttendanceBanner = () => {
 
   return (
     <div>
-      <BannerRow
-        label="친구 출석 도와주기"
-        onClick={() => setIsOpen(true)}
-        trailing={<ChevronRightIcon />}
-      />
+      <BannerRow label="친구 출석 도와주기" onClick={openHelpQr} trailing={<ChevronRightIcon />} />
       {isOpen &&
         createPortal(
           <div
@@ -70,8 +86,27 @@ export const HelpFriendAttendanceBanner = () => {
               <p className="mt-2 text-base font-medium tracking-[-0.05em] text-[#8E8E93]">
                 친구는 QR 찍기를 통해 출석할 수 있어요!
               </p>
-              <div className="mt-5 flex justify-center">
-                <QRCode value="ddd" size={275} className="h-auto w-full max-w-[275px]" />
+              <div className="mt-5 flex h-[275px] items-center justify-center">
+                {isQrLoading && (
+                  <p className="text-sm text-[#8E8E93]" role="status">
+                    QR 코드를 생성하고 있어요.
+                  </p>
+                )}
+                {qrToken && <QRCode value={qrToken} size={275} />}
+                {qrError && (
+                  <div className="flex flex-col items-center gap-3 text-center">
+                    <p className="text-sm text-red-600" role="alert">
+                      {qrError}
+                    </p>
+                    <button
+                      type="button"
+                      className="text-sm font-semibold text-[#346287]"
+                      onClick={openHelpQr}
+                    >
+                      다시 시도
+                    </button>
+                  </div>
+                )}
               </div>
               <Button
                 variant="danger"
