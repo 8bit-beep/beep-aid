@@ -6,14 +6,16 @@ import { createPortal } from "react-dom";
 import QRCode from "react-qr-code";
 import { Button } from "@/shared/ui/button";
 
+const HELP_QR_DURATION_SECONDS = 59;
+
 export const HelpFriendAttendanceBanner = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [qrToken, setQrToken] = useState<string | null>(null);
   const [qrError, setQrError] = useState<string | null>(null);
   const [isQrLoading, setIsQrLoading] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(HELP_QR_DURATION_SECONDS);
 
-  const openHelpQr = async () => {
-    setIsOpen(true);
+  const requestHelpQr = async () => {
     setQrToken(null);
     setQrError(null);
     setIsQrLoading(true);
@@ -26,6 +28,12 @@ export const HelpFriendAttendanceBanner = () => {
     } finally {
       setIsQrLoading(false);
     }
+  };
+
+  const openHelpQr = () => {
+    setIsOpen(true);
+    setRemainingSeconds(HELP_QR_DURATION_SECONDS);
+    void requestHelpQr();
   };
 
   useEffect(() => {
@@ -55,6 +63,22 @@ export const HelpFriendAttendanceBanner = () => {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen || remainingSeconds === 0) return;
+
+    const timeoutId = window.setTimeout(() => {
+      if (remainingSeconds === 1) {
+        setRemainingSeconds(0);
+        setIsOpen(false);
+        return;
+      }
+
+      setRemainingSeconds(currentSeconds => currentSeconds - 1);
+    }, 1000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isOpen, remainingSeconds]);
+
   return (
     <div>
       <BannerRow label="친구 출석 도와주기" onClick={openHelpQr} trailing={<ChevronRightIcon />} />
@@ -81,7 +105,9 @@ export const HelpFriendAttendanceBanner = () => {
                 >
                   친구 출석 도와주기
                 </h2>
-                <span className="text-sm tracking-[-0.05em] text-[#346287]">0:59</span>
+                <span className="text-sm tracking-[-0.05em] text-[#346287]">
+                  0:{String(remainingSeconds).padStart(2, "0")}
+                </span>
               </div>
               <p className="mt-2 text-base font-medium tracking-[-0.05em] text-[#8E8E93]">
                 친구는 QR 찍기를 통해 출석할 수 있어요!
@@ -101,7 +127,7 @@ export const HelpFriendAttendanceBanner = () => {
                     <button
                       type="button"
                       className="text-sm font-semibold text-[#346287]"
-                      onClick={openHelpQr}
+                      onClick={() => void requestHelpQr()}
                     >
                       다시 시도
                     </button>
