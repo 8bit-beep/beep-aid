@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckOutAttendanceButton } from "@/features/attendance/check-out-attendance";
 import { useAuth } from "@/features/auth";
+import { isAttendanceCompleted } from "@/entities/user";
 import phone from "@/shared/ui/assets/phone.gif";
 import phoneEnd from "@/shared/ui/assets/phone-end.png";
 import { Button } from "@/shared/ui/button";
@@ -14,7 +15,7 @@ export const AttendanceCard = () => {
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [attendanceMethod, setAttendanceMethod] = useState<AttendanceMethod>("NFC");
   const currentStatus = user.currentStatus;
-  const isCheckedIn = currentStatus != null && currentStatus.name !== "미출석";
+  const isCheckedIn = isAttendanceCompleted(user);
 
   const openAttendanceModal = (method: AttendanceMethod) => {
     setAttendanceMethod(method);

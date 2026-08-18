@@ -1,6 +1,7 @@
 export { MOCK_USER } from "./model/mock-user";
 export {
   formatStudentNumber,
+  isAttendanceCompleted,
   studentInfoSchema,
   userRoleSchema,
   userSchema,

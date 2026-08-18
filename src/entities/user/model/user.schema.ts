@@ -33,3 +33,7 @@ export type User = z.infer<typeof userSchema>;
 
 export const formatStudentNumber = ({ grade, classNumber, num }: StudentInfo) =>
   `${grade}학년 ${classNumber}반 ${num}번`;
+
+// currentStatus가 없거나 "미출석"이면 아직 출석하지 않은 상태다.
+export const isAttendanceCompleted = ({ currentStatus }: User) =>
+  currentStatus != null && currentStatus.name !== "미출석";
