@@ -6,6 +6,7 @@ const tokenSchema = z.string().trim().min(1);
 const qrDataSchema = z.union([
   tokenSchema.transform(text => ({ text })),
   z.object({ text: tokenSchema }),
+  z.object({ value: tokenSchema }).transform(({ value }) => ({ text: value })),
 ]);
 
 const parseTokenFromText = (rawText: string) => {
