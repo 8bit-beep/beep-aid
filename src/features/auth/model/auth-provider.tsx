@@ -63,6 +63,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     return user;
   };
 
+  const setCurrentStatus = (currentStatus: NonNullable<User["currentStatus"]> | null) => {
+    setState(currentState =>
+      currentState.status === "authenticated"
+        ? {
+            status: "authenticated",
+            user: { ...currentState.user, currentStatus },
+          }
+        : currentState
+    );
+  };
+
   if (state.status === "loading") {
     return (
       <AuthStatusScreen
@@ -80,7 +91,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user: state.user, refreshUser }}>
+    <AuthContext.Provider value={{ user: state.user, refreshUser, setCurrentStatus }}>
       {children}
     </AuthContext.Provider>
   );

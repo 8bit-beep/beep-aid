@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { CheckOutAttendanceButton } from "@/features/attendance/check-out-attendance";
 import { useAuth } from "@/features/auth";
-import { isAttendanceCompleted } from "@/entities/user";
+import { isAttendanceCompleted, type User } from "@/entities/user";
 import phone from "@/shared/ui/assets/phone.gif";
 import phoneEnd from "@/shared/ui/assets/phone-end.png";
 import { Button } from "@/shared/ui/button";
-import { useToast } from "@/shared/ui/toast";
 import { AttendanceModal } from "../../attendance-modal";
 import type { AttendanceMethod } from "../../attendance-modal/type";
 
 export const AttendanceCard = () => {
-  const { user, refreshUser } = useAuth();
-  const toast = useToast();
+  const { user, setCurrentStatus } = useAuth();
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false);
   const [attendanceMethod, setAttendanceMethod] = useState<AttendanceMethod>("NFC");
   const currentStatus = user.currentStatus;
@@ -22,17 +20,13 @@ export const AttendanceCard = () => {
     setIsAttendanceModalOpen(true);
   };
 
-  const refreshAttendanceState = async () => {
-    try {
-      await refreshUser();
-    } catch {
-      toast.warning("서버 상태를 새로고침하지 못했어요. 화면을 다시 열어 확인해 주세요.");
-    }
+  const handleAttendanceSuccess = (attendanceType: NonNullable<User["currentStatus"]>) => {
+    setCurrentStatus(attendanceType);
+    setIsAttendanceModalOpen(false);
   };
 
-  const handleAttendanceSuccess = async () => {
-    await refreshAttendanceState();
-    setIsAttendanceModalOpen(false);
+  const handleCheckOutSuccess = () => {
+    setCurrentStatus(null);
   };
 
   return (
@@ -51,7 +45,7 @@ export const AttendanceCard = () => {
         {isCheckedIn && currentStatus ? (
           <CheckOutAttendanceButton
             currentActivity={currentStatus.name}
-            onSuccess={refreshAttendanceState}
+            onSuccess={handleCheckOutSuccess}
           />
         ) : (
           <div className="flex gap-3">
