@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Actions, useBridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
-import { Dropdown } from "@b1nd/dodam-design-system/components";
 import { useAttendanceTypes } from "@/entities/attendance";
 import { useNFCCheck } from "@/features/attendance/nfc-check";
 import { useQRCheck } from "@/features/attendance/qr-check";
 import { Button } from "@/shared/ui/button";
 import { Modal } from "@/shared/ui/modal";
+import { Select } from "@/shared/ui/select";
 import { useToast } from "@/shared/ui/toast";
 import type { AttendanceModalProps } from "../type";
 
@@ -83,18 +83,13 @@ export const AttendanceModal = ({ onClose, onSuccess, method }: AttendanceModalP
         )}
 
         {!isLoading && !attendanceTypesError && attendanceTypes.length > 0 && (
-          <Dropdown
+          <Select
             items={dropdownItems}
             value={selectedAttendanceTypeId}
             onSelectedItemChange={item => {
               setSelectedAttendanceTypeId(item.value);
               nfc.reset();
               qr.reset();
-            }}
-            customStyle={{
-              width: "100%",
-              boxSizing: "border-box",
-              border: "1px solid #e5e7eb",
             }}
           />
         )}
