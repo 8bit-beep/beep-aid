@@ -78,11 +78,13 @@ export const Select = ({ items, value, onSelectedItemChange }: SelectProps) => {
     if (!isOpen) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        event.stopPropagation();
         setIsOpen(false);
+        triggerRef.current?.focus();
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => document.removeEventListener("keydown", handleKeyDown, true);
   }, [isOpen]);
 
   useEffect(() => {
