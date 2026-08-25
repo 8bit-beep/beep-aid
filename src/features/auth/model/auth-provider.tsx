@@ -1,8 +1,9 @@
 import { useEffect, useState, type PropsWithChildren } from "react";
 import { MOCK_USER, type User } from "@/entities/user";
-import { useAuthTokenPersistence } from "@/shared/lib/auth-token";
+import { subscribeTokens, useAuthTokenPersistence } from "@/shared/lib/auth-token";
 import { bootstrapAidAuth, getCurrentUser, retryAidAuth } from "../api/auth-api";
 import { AuthContext, type AuthState } from "./auth-context";
+import { toAuthErrorReason } from "./auth-error";
 
 const useMockUser = import.meta.env.VITE_USE_MOCK_USER === "true";
 
@@ -27,12 +28,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           setState({ status: "authenticated", user });
         }
       })
-      .catch(() => {
+      .catch(error => {
         if (active) {
-          setState({
-            status: "error",
-            description: "인증 정보를 확인하지 못했습니다. 도담 앱에서 다시 시도해 주세요.",
-          });
+          setState({ status: "error", reason: toAuthErrorReason(error) });
         }
       });
 
@@ -40,6 +38,24 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       active = false;
     };
   }, [attempt]);
+
+  // 401 재발급까지 실패하면 인터셉터가 토큰을 비운다. 그 순간 화면은 여전히
+  // 인증된 상태라 이후 요청이 전부 실패하므로, 인증 화면으로 되돌린다.
+  useEffect(
+    () =>
+      subscribeTokens(nextTokens => {
+        if (nextTokens.accessToken || nextTokens.dodamToken) {
+          return;
+        }
+
+        setState(currentState =>
+          currentState.status === "authenticated"
+            ? { status: "error", reason: "session-expired" }
+            : currentState
+        );
+      }),
+    []
+  );
 
   const retry = () => {
     setState({ status: "loading" });

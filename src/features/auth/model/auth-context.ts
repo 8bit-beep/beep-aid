@@ -1,10 +1,11 @@
 import { createContext } from "react";
 import type { User } from "@/entities/user";
+import type { AuthErrorReason } from "./auth-error";
 
 export type AuthState =
   | { status: "loading" }
   | { status: "authenticated"; user: User }
-  | { status: "error"; description: string };
+  | { status: "error"; reason: AuthErrorReason };
 
 export type AuthContextValue = {
   state: AuthState;
