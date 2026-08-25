@@ -2,13 +2,7 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import { MOCK_USER, type User } from "@/entities/user";
 import { useAuthTokenPersistence } from "@/shared/lib/auth-token";
 import { bootstrapAidAuth, getCurrentUser, retryAidAuth } from "../api/auth-api";
-import { AuthStatusScreen } from "../ui/auth-status-screen";
-import { AuthContext } from "./auth-context";
-
-type AuthState =
-  | { status: "loading" }
-  | { status: "authenticated"; user: User }
-  | { status: "error"; description: string };
+import { AuthContext, type AuthState } from "./auth-context";
 
 const useMockUser = import.meta.env.VITE_USE_MOCK_USER === "true";
 
@@ -74,24 +68,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
-  if (state.status === "loading") {
-    return (
-      <AuthStatusScreen
-        title="사용자 정보를 확인하고 있어요"
-        description="잠시만 기다려 주세요."
-        loading
-      />
-    );
-  }
-
-  if (state.status === "error") {
-    return (
-      <AuthStatusScreen title="인증하지 못했어요" description={state.description} onRetry={retry} />
-    );
-  }
-
+  // 상태와 무관하게 항상 컨텍스트를 제공한다. 무엇을 보여줄지는 app 레이어의
+  // AuthGate가 결정해야 앱 셸(safe-area, 스크롤 영역, 토스트)이 유지된다.
   return (
-    <AuthContext.Provider value={{ user: state.user, refreshUser, setCurrentStatus }}>
+    <AuthContext.Provider value={{ state, retry, refreshUser, setCurrentStatus }}>
       {children}
     </AuthContext.Provider>
   );

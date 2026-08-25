@@ -12,7 +12,12 @@ export const AuthStatusScreen = ({
   onRetry,
 }: AuthStatusScreenProps) => {
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-gray-50 px-6 text-center">
+    // 앱 셸의 스크롤 영역(.app-shell__scroll) 안에 놓이므로 dvh가 아니라 부모 높이를 채운다.
+    <div
+      className="flex min-h-full flex-col items-center justify-center bg-gray-50 px-6 text-center"
+      role="status"
+      aria-live="polite"
+    >
       <div className="flex max-w-sm flex-col items-center gap-3">
         {loading && (
           <div
@@ -32,6 +37,6 @@ export const AuthStatusScreen = ({
           </button>
         )}
       </div>
-    </main>
+    </div>
   );
 };
