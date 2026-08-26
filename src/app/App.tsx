@@ -9,7 +9,6 @@ import { Navbar } from "@/widgets/navbar";
 import { ToastProvider } from "@/shared/ui/toast";
 import { TAB_PATHS } from "@/shared/config/tabs";
 import { routes } from "./routes";
-import { AuthGate } from "./ui/auth-gate";
 
 type SafeAreaProperties = CSSProperties & {
   "--native-safe-area-top": string;
@@ -38,9 +37,7 @@ function AppShell() {
     <div className="app-shell" style={safeAreaStyle}>
       <main className="app-shell__scroll">
         <ToastProvider />
-        <AuthGate>
-          <Router routes={routes} />
-        </AuthGate>
+        <Router routes={routes} />
       </main>
       {state.status === "authenticated" && <Navbar />}
     </div>

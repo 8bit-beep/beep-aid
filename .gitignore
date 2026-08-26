@@ -15,6 +15,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Agent tooling artifacts
+.omo/
+
 # Editor directories and files
 .claude/
 .vscode/*
