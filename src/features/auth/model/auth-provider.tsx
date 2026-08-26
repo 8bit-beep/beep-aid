@@ -1,14 +1,9 @@
 import { useEffect, useState, type PropsWithChildren } from "react";
 import { MOCK_USER, type User } from "@/entities/user";
-import { useAuthTokenPersistence } from "@/shared/lib/auth-token";
+import { subscribeTokens, useAuthTokenPersistence } from "@/shared/lib/auth-token";
 import { bootstrapAidAuth, getCurrentUser, retryAidAuth } from "../api/auth-api";
-import { AuthStatusScreen } from "../ui/auth-status-screen";
-import { AuthContext } from "./auth-context";
-
-type AuthState =
-  | { status: "loading" }
-  | { status: "authenticated"; user: User }
-  | { status: "error"; description: string };
+import { AuthContext, type AuthState } from "./auth-context";
+import { toAuthErrorReason } from "./auth-error";
 
 const useMockUser = import.meta.env.VITE_USE_MOCK_USER === "true";
 
@@ -33,12 +28,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
           setState({ status: "authenticated", user });
         }
       })
-      .catch(() => {
+      .catch(error => {
         if (active) {
-          setState({
-            status: "error",
-            description: "인증 정보를 확인하지 못했습니다. 도담 앱에서 다시 시도해 주세요.",
-          });
+          setState({ status: "error", reason: toAuthErrorReason(error) });
         }
       });
 
@@ -46,6 +38,24 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       active = false;
     };
   }, [attempt]);
+
+  // 401 재발급까지 실패하면 인터셉터가 토큰을 비운다. 그 순간 화면은 여전히
+  // 인증된 상태라 이후 요청이 전부 실패하므로, 인증 화면으로 되돌린다.
+  useEffect(
+    () =>
+      subscribeTokens(nextTokens => {
+        if (nextTokens.accessToken || nextTokens.dodamToken) {
+          return;
+        }
+
+        setState(currentState =>
+          currentState.status === "authenticated"
+            ? { status: "error", reason: "session-expired" }
+            : currentState
+        );
+      }),
+    []
+  );
 
   const retry = () => {
     setState({ status: "loading" });
@@ -74,24 +84,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     );
   };
 
-  if (state.status === "loading") {
-    return (
-      <AuthStatusScreen
-        title="사용자 정보를 확인하고 있어요"
-        description="잠시만 기다려 주세요."
-        loading
-      />
-    );
-  }
-
-  if (state.status === "error") {
-    return (
-      <AuthStatusScreen title="인증하지 못했어요" description={state.description} onRetry={retry} />
-    );
-  }
-
+  // 상태와 무관하게 항상 컨텍스트를 제공한다. 무엇을 보여줄지는 app 레이어의
+  // AuthGate가 결정해야 앱 셸(safe-area, 스크롤 영역, 토스트)이 유지된다.
   return (
-    <AuthContext.Provider value={{ user: state.user, refreshUser, setCurrentStatus }}>
+    <AuthContext.Provider value={{ state, retry, refreshUser, setCurrentStatus }}>
       {children}
     </AuthContext.Provider>
   );

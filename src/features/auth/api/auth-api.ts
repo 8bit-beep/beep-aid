@@ -1,6 +1,7 @@
 import { userSchema, type User } from "@/entities/user";
 import { appClient, exchangeDodamToken } from "@/shared/api";
 import { getAccessToken, getDodamToken, setTokens } from "@/shared/lib/auth-token";
+import { AuthError } from "../model/auth-error";
 
 let bootstrapRequest: Promise<User> | null = null;
 
@@ -36,7 +37,7 @@ const performAidAuthBootstrap = async () => {
     const storedDodamToken = getDodamToken();
 
     if (!storedDodamToken) {
-      throw new Error("도담 토큰이 없어 인증할 수 없습니다.");
+      throw new AuthError("no-token");
     }
 
     await exchangeDodamToken(storedDodamToken);
