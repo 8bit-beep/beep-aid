@@ -4,7 +4,7 @@ import { BridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
 import { SafeAreaProvider, useSafeArea } from "@b1nd/aid-kit/safe-area-provider";
 import { AppStateProvider } from "@b1nd/aid-kit/app-state";
 import { RouteProvider, Router, useRouter } from "@b1nd/aid-kit/navigation";
-import { AuthProvider } from "@/features/auth";
+import { AuthProvider, useAuthState } from "@/features/auth";
 import { Navbar } from "@/widgets/navbar";
 import { ToastProvider } from "@/shared/ui/toast";
 import { TAB_PATHS } from "@/shared/config/tabs";
@@ -20,6 +20,7 @@ const VALID_TAB_PATHS = routes.tabs.map(tab => tab.path);
 function AppShell() {
   const { top, bottom } = useSafeArea();
   const { tab } = useRouter();
+  const { state } = useAuthState();
   const safeAreaStyle: SafeAreaProperties = {
     "--native-safe-area-top": `${top}px`,
     "--native-safe-area-bottom": `${bottom}px`,
@@ -38,7 +39,7 @@ function AppShell() {
         <ToastProvider />
         <Router routes={routes} />
       </main>
-      <Navbar />
+      {state.status === "authenticated" && <Navbar />}
     </div>
   );
 }

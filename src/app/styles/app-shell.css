@@ -23,6 +23,9 @@ body {
   padding-block-start: max(var(--native-safe-area-top), env(safe-area-inset-top, 0px));
   padding-block-end: max(var(--native-safe-area-bottom), env(safe-area-inset-bottom, 0px));
   overflow: hidden;
+  /* safe-area 패딩 영역까지 앱 배경색으로 채운다. 색이 없으면 body 기본 흰색이 드러나
+     노치/홈 인디케이터 자리에 흰 띠가 생긴다. 페이지들이 쓰는 bg-gray-50과 같은 토큰. */
+  background-color: var(--color-gray-50);
 }
 
 .app-shell__scroll {
