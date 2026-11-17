@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Actions, useBridgeProvider } from "@b1nd/aid-kit/bridge-kit/web";
 import { useAttendanceTypes } from "@/entities/attendance";
+import { useCheckpoints } from "@/entities/checkpoint";
+import { useMySchedules } from "@/entities/schedule";
 import { useNFCCheck } from "@/features/attendance/nfc-check";
 import { useQRCheck } from "@/features/attendance/qr-check";
 import { Button } from "@/shared/ui/button";
 import { Modal } from "@/shared/ui/modal";
 import { Select } from "@/shared/ui/select";
 import { useToast } from "@/shared/ui/toast";
+import { getDefaultAttendanceTypeId } from "../model/get-default-attendance-type-id";
 import type { AttendanceModalProps } from "../type";
 
 export const AttendanceModal = ({ onClose, onSuccess, method }: AttendanceModalProps) => {
@@ -17,7 +20,21 @@ export const AttendanceModal = ({ onClose, onSuccess, method }: AttendanceModalP
     value: String(item.id),
     name: item.name,
   }));
-  const [selectedAttendanceTypeId, setSelectedAttendanceTypeId] = useState("출석 유형 선택");
+  const { schedules, isLoading: isSchedulesLoading } = useMySchedules();
+  const { checkpoints, isLoading: isCheckpointsLoading } = useCheckpoints();
+  const [openedAt] = useState(() => new Date());
+  // 스케줄과 체크포인트가 모두 끝난 뒤에 계산해서, 기본값이 중간에 바뀌지 않게 한다.
+  const defaultAttendanceTypeId = useMemo(
+    () =>
+      isSchedulesLoading || isCheckpointsLoading
+        ? undefined
+        : getDefaultAttendanceTypeId({ schedules, checkpoints, attendanceTypes, now: openedAt }),
+    [isSchedulesLoading, isCheckpointsLoading, schedules, checkpoints, attendanceTypes, openedAt]
+  );
+  // 사용자가 직접 고른 값이 있으면 기본값보다 우선한다.
+  const [userSelectedAttendanceTypeId, setSelectedAttendanceTypeId] = useState<string | null>(null);
+  const selectedAttendanceTypeId =
+    userSelectedAttendanceTypeId ?? defaultAttendanceTypeId ?? "출석 유형 선택";
   const selectedAttendanceType = attendanceTypes.find(
     item => String(item.id) === selectedAttendanceTypeId
   );

@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "pack:dist": "node scripts/pack-dist.mjs",
+    "release:zip": "npm run build && npm run pack:dist",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write .",
